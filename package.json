@@ -1,0 +1,24 @@
+{
+  "name": "mybot",
+  "version": "1.0.0",
+  "description": "a package",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BJS324MC/mybot.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/BJS324MC/mybot/issues"
+  },
+  "homepage": "https://github.com/BJS324MC/mybot#readme",
+  "dependencies": {
+    "@discordjs/builders": "^0.6.0",
+    "@discordjs/rest": "^0.1.0-canary.0",
+    "discord-api-types": "^0.23.1"
+  }
+}

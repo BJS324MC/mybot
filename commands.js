@@ -6,10 +6,8 @@ const names = require("./names.json")
 
 const convert = arr => new SlashCommandBuilder().setName(arr[0]).setDescription(arr[1]).toJSON()
 
-const commands = [];
+const commands = Object.entries(names).map(convert);
 
-for(let cmd of Object.entries(names))
-  commands.push(convert(cmd))
 const rest = new REST({ version: '9' }).setToken(token);
 
 rest.put(Routes.applicationGuildCommands(clientId, guildId), { body: commands })

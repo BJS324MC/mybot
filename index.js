@@ -1,10 +1,25 @@
 // Require the necessary discord.js classes
-const { Client, Intents, MessageActionRow, MessageButton } = require('discord.js');
+const fs = require('fs');
+const { Client, Intents} = require('discord.js');
 const { token } = require('./config.json');
 
 // Create a new client instance
 const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
-const { floor, random } = Math;
+const shuffleString = str => {
+	let arr = str.split('');
+	for (let i = arr.length-1;i > 0;i--){
+		const j = floor(random() * (i + 1));
+		[arr[i],arr[j]] = [arr[j],arr[i]];
+	}
+	return arr.join('');
+};
+
+const commands={}
+const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+for (const file of commandFiles) {
+	const command = require(`./commands/${file}`);
+	commands[command.data.name] = command;
+}
 
 // When the client is ready, run this code (only once)
 client.once('ready', () => {
@@ -12,26 +27,18 @@ client.once('ready', () => {
 });
 client.on('interactionCreate', async interaction => {
 	if (interaction.isCommand()) {
-		switch (interaction.commandName) {
-			case 'ping':
-				await interaction.reply('No.');
-				break;
-			case 'roll':
-				await interaction.reply(`You rolled the number ${floor(random() * 6)}!`);
-				break;
-			case 'generate':
-				const row = new MessageActionRow()
-					.addComponents(
-						new MessageButton()
-							.setCustomId('another')
-							.setLabel('Another')
-							.setStyle('ANOTHER'),
-					);
-				await interaction.reply({ content: 'Generated nothing.', components: [row] });
-				break;
+		if(!(interaction.commandName in commands)) return;
+		try{
+			commands[interaction.commandName].execute(interaction);
+		} catch(error){
+			console.error(error);
+			await interaction.reply({ content: 'I got an error executing this command!', ephemeral: true });
 		}
-	}else if(interaction.isButton()){
-		console.log(interaction)
+	}
+	else if(interaction.isButton()){
+		if(interaction.customId==="another"){
+			await interaction.update({content:shuffleString("Generated nothing.")});
+		}
 	}
 });
 

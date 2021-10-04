@@ -1,12 +1,16 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
+const fs = require('fs');
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v9');
 const { clientId, guildId, token } = require('./config.json');
-const names = require("./names.json")
 
-const convert = arr => new SlashCommandBuilder().setName(arr[0]).setDescription(arr[1]).toJSON()
+const commands = []
 
-const commands = Object.entries(names).map(convert);
+const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+
+for (const file of commandFiles) {
+	const command = require(`./commands/${file}`);
+	commands.push(command.data);
+}
 
 const rest = new REST({ version: '9' }).setToken(token);
 

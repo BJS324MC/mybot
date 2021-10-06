@@ -31,13 +31,8 @@ client.on('interactionCreate', async interaction => {
 		try{
 			commands[interaction.commandName].execute(interaction);
 		} catch(error){
-			console.error(error);
 			await interaction.reply({ content: 'I got an error executing this command!', ephemeral: true });
-		}
-	}
-	else if(interaction.isButton()){
-		if(interaction.customId==="another"){
-			await interaction.update({content:shuffleString("Generated nothing.")});
+			console.error(error);
 		}
 	}
 });

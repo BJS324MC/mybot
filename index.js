@@ -5,14 +5,6 @@ const { token } = require('./config.json');
 
 // Create a new client instance
 const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
-const shuffleString = str => {
-	let arr = str.split('');
-	for (let i = arr.length-1;i > 0;i--){
-		const j = floor(random() * (i + 1));
-		[arr[i],arr[j]] = [arr[j],arr[i]];
-	}
-	return arr.join('');
-};
 
 const commands={}
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));

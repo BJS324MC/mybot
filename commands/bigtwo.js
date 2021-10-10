@@ -1,7 +1,7 @@
 module.exports = {
 	data: {
-		name: "blackjack",
-		description: "Play Blackjack against your friends!",
+		name: "bigtwo",
+		description: "Play Big Two against your friends!",
 		options: [{
 			name: "opponent1",
 			description: "The first player you are going to play against",
@@ -19,20 +19,13 @@ module.exports = {
 			description: "The third player you are going to play against",
 			type: 9,
 			required: false
-		},
-		{
-			name: "bot",
-			description: "Whether the bot becomes the dealer",
-			type: 5,
-			required: false
 		}]
 	},
 	async execute(interaction) {
-		const isBot = interaction.options.data.find(a => a.name === "bot")?.value,
-			players = interaction.options.data.reduce((t, a) => a.name.startsWith("opponent") ? t.concat(a.user) : t, []),
+		const players = interaction.options.data.reduce((t, a) => a.name.startsWith("opponent") ? t.concat(a.user) : t, []).concat(interaction.user),
 			deck = [],
 			playerCount = players.length,
-			hands = Array(playerCount + 1).fill(0).map(a => []),
+			hands = Array(playerCount).fill(0).map(a => []),
 			rand = n => Math.floor(Math.random() * n),
 			shuffle = arr => {
 				for (let i = arr.length - 1; i > 0; i--) {
@@ -82,8 +75,6 @@ module.exports = {
 			for (let g of "JQKA") deck.push(g + f);
 		}
 		shuffle(deck);
-		shuffle(players);
-		players.push(interaction.user);
 
 		let turn = 0;
 		for (let i = 0; i < playerCount + 1; i++) {

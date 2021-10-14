@@ -1,3 +1,7 @@
+/**
+ * @requires Players start with 3 diamonds. They can choose
+ */
+
 module.exports = {
 	data: {
 		name: "bigtwo",
@@ -34,24 +38,7 @@ module.exports = {
 				}
 				return arr
 			},
-			hit = n => hands[n].push(deck.pop()),
-			deckTotal = d => {
-				let unres = 0,
-					total = 0;
-
-				for (let card of d) {
-					let val = card.slice(0, -1);
-					if (val === "A") unres++;
-					else if (isNaN(val)) total += 10;
-					else total += Number(val);
-				}
-				if (unres > 0 && total + unres < 12) {
-					total += 11;
-					unres--;
-				}
-				total += unres;
-				return total;
-			},
+			take = n => hands[n].push(deck.pop()),
 			getInfo = (show = false) => {
 				let results, res;
 				if (show) {
@@ -62,7 +49,7 @@ module.exports = {
 				let info = "",
 					addIn = (p, deal = false) => {
 						let m = show ? hands[p].join(" ")
-							: ((deal ? hands[p][0] + " " : "") + "? ".repeat(hands[p].length - (deal ? 1 : 0)));
+							: ((deal ? hands[p][0]  + " " : "") + "? ".repeat(hands[p].length - (deal ? 1 : 0)));
 						info += `<@${players[p].id}>'s hand${deal ? " (Dealer)" : ""}: \`${m}\`    ${show ? deal ? res > 21 ? "**BUSTED!**" : "" : results[p] : p === turn ? "__**PLAYING**__" : ""}\n`
 					};
 				addIn(playerCount, true);
@@ -83,7 +70,7 @@ module.exports = {
 		};
 		const embed = {
 			color: 0x0bd440,
-			title: "Blackjack",
+			title: "Big Two",
 			thumbnail: {
 				url: "https://i.imgur.com/EgZyNgL.png"
 			},

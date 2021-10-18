@@ -1,5 +1,3 @@
-const { powStrict } = require('@tensorflow/tfjs-core');
-
 const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 module.exports = {
 	data: {

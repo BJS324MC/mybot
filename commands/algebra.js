@@ -18,7 +18,7 @@ module.exports = {
         }]
     },
     async execute(interaction) {
-        const eq = interaction.options.data[0].value;
+        const eq = interaction.options.data[0].options[0].value;
 
         await interaction.reply({embeds: [{
             color:0x0099dd,
@@ -27,7 +27,7 @@ module.exports = {
             fields:[
                 {
                     name:"1. Simplify.",
-                    value:simplify(eq)
+                    value:simplify(eq).toString()
                 }
             ]
         }]});

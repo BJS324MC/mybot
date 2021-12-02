@@ -1,4 +1,4 @@
-const fetch = (...args) => import('node-fetch').then(({ default: fetch }) => fetch(...args));
+const fetch = require("../fetch.js");
 
 module.exports = {
     data: {
@@ -151,7 +151,7 @@ module.exports = {
             embeds: [{
                 color: 0x05ff0f,
                 image: {
-                    url: (await (await fetch(`https://nekobot.xyz/api/image?type=${interaction.options.data[0].options[0].name}`)).json()).message
+                    url: JSON.parse(await fetch(`https://nekobot.xyz/api/image?type=${interaction.options.data[0].options[0].name}`)).message
                 },
                 footer: {
                     text: "Powered by nekobot"

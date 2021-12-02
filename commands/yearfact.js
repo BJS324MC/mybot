@@ -1,4 +1,4 @@
-const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
+const fetch = require('../fetch.js');
 module.exports = {
 	data: {
         name:"yearfact",
@@ -12,7 +12,7 @@ module.exports = {
     },
 	async execute(interaction) {
         const year = interaction.options.data[0].value;
-        const json = await(await fetch(`https://en.wikipedia.org/w/rest.php/v1/page/${year}`)).json();
+        const json = JSON.parse(await fetch(`https://en.wikipedia.org/w/rest.php/v1/page/${year}`));
         console.log(json.source);
         await interaction.reply(JSON.stringify(json));
 	},

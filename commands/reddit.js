@@ -1,4 +1,4 @@
-const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
+const fetch = require('../fetch.js');
 module.exports = {
 	data: {
         name:"randreddit",
@@ -11,8 +11,9 @@ module.exports = {
         }]
     },
 	async execute(interaction) {
+	      await interaction.deferReply();
         const sub = interaction.options.data[0].value;
-        const data = await (await fetch(`https://www.reddit.com/r/${sub}/new.json`)).json();
+        const data = JSON.parse(await fetch(`https://www.reddit.com/r/${sub}/new.json`));
         const posts = data.data.children;
         const post = posts[Math.floor(posts.length * Math.random())].data;
         const embed = {
@@ -23,9 +24,9 @@ module.exports = {
             footer : {
                 text : `💬 ${post.num_comments}   |   ⬆️  ${post.score}  `
             }
-        }
+        };
         if(embed.title.length > 256) embed.title = embed.title.slice(0,253) + "...";
-        if ("url_overridden_by_dest" in post)embed.image = { url : post.url_overridden_by_dest };
-        await interaction.reply({embeds:[embed]});
-	},
+        if ("url_overridden_by_dest" in post) embed.image = { url : post.url_overridden_by_dest };
+        await interaction.editReply({embeds:[embed]});
+	}
 };

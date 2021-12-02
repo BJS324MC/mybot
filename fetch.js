@@ -1,0 +1,1 @@
+const https=require("https");module.exports=t=>new Promise((n,o)=>{https.get(t,t=>{const o=[];t.on("data",t=>o.push(t.toString("utf8"))),t.on("end",()=>n(o.join("")))}).on("error",o)});
